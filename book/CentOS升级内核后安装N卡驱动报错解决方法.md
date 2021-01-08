@@ -8,6 +8,8 @@
 
 错误提示如下：
 
+![Branching](https://book.258tiao.com/photo/1.jpg)
+
 该错误可以通过升级系统gcc版本解决，步骤如下：
 
 ### 1、添加scl源
@@ -21,16 +23,20 @@
 ### 3、列出安装的scl包
 
 `scl -l`
-可以看到当前安装了 devtoolset-9
+
+可以看到当前安装了 `devtoolset-9`
+
+![Branching](https://book.258tiao.com/photo/devtoolver.jpg)
 
 ### 4、临时切换版本
 
 `scl enable devtoolset-9 bash`
 
-```note
 ### 5、切换后查看gcc版本
+
 `gcc -v`
-```
+
+![Branching](https://book.258tiao.com/photo/gccv.jpg)
 
 可以看到切换后gcc版本为9.3.1
 
@@ -38,6 +44,8 @@
 ## 注意事项：
 1、安装N卡驱动时不要勾选DKMS ，勾选后安装时会导致错误
 错误提示如下：
+
+![Branching](https://book.258tiao.com/photo/nv_error.jpg)
 
 2、切换命令只是临时更改系统gcc版本，如需替换系统旧版为新版，请将新版本gcc g++建立软链接在 /usr/bin目录下即可
 3、目前长期支持版内核5.10 在磁盘格式为Btrfs时 有严重性能衰退，目前已找到原因并给出了补丁，但是还没有更新到主线，建议分区为其他格式或者等补丁
