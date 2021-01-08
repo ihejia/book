@@ -4,11 +4,13 @@
 
 转载注明本文链接：<https://blog.258tiao.com/?id=4>
 
+```rip
 升级CentOS内核后，由于新版的kernel核心使用新版本的gcc 9.3.1编译。系统内置的gcc版本为 4.8.5，会导致N卡驱动拒绝安装。
 
 错误提示如下：
 
 ![Branching](https://book.258tiao.com/photo/1.jpg)
+```
 
 该错误可以通过升级系统gcc版本解决，步骤如下：
 
@@ -48,5 +50,6 @@
 ![Branching](https://book.258tiao.com/photo/nv_error.jpg)
 
 2、切换命令只是临时更改系统gcc版本，如需替换系统旧版为新版，请将新版本gcc g++建立软链接在 /usr/bin目录下即可
+
 3、目前长期支持版内核5.10 在磁盘格式为Btrfs时 有严重性能衰退，目前已找到原因并给出了补丁，但是还没有更新到主线，建议分区为其他格式或者等补丁
 ```
