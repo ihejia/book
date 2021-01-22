@@ -38,4 +38,4 @@
 #### 2、umount 分区挂载（已挂载分区不能修改）
 
 #### 3、将需要的UUID写到分区
-tune2fs -U fb64ca8a-dc5f-4446-8c18-4e0f05dbcbe1 /dev/sda3
+`tune2fs -U fb64ca8a-dc5f-4446-8c18-4e0f05dbcbe1 /dev/sda3`
