@@ -1,4 +1,4 @@
-# 修改ESXi Ubuntu休眠唤醒黑屏
+# 解决Ubuntu休眠唤醒黑屏
 
 ## Power by AMD China FAE Team
 
