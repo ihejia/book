@@ -13,6 +13,13 @@ debian 与 基于debian系列的ubuntu在笔记本使用时经常会遇到休眠
 `sudo apt install laptop-mode-tools `
 
 
+大多数笔记本安装以上软件可以解决休眠问题，确实有一些笔记本比较特殊安装后没有缓解可以继续安装pm-utils软件：
+
+`sudo apt-get install pm-utils`
+
+pm-utils具体介绍如下:
+https://blog.csdn.net/qingqing7/article/details/78555006
+
 详细配置可参考archlinux维基其连接如下：
 https://wiki.archlinux.org/index.php/Laptop_Mode_Tools_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)
 
