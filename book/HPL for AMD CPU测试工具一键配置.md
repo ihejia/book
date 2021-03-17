@@ -14,9 +14,15 @@
 警告：执行该命令会删除已安装的测试环境目录
 ```
 ### 一、复制并执行下面的命令
-`rm -rf ~/hpl && mkdir ~/hpl && cd ~/hpl && wget https://tools.258tiao.com/tools/hpl/install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh && chmod +x install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh &&sudo -s ./install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh &&sudo -s chown -R $whoami:$whoami ./`
+`cd ~ &&wget https://tools.258tiao.com/tools/hpl/install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh && chmod +x install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh &&sudo -s ./install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh &&sudo -s chown -R $whoami:$whoami hpl/ &&rm -rf https://tools.258tiao.com/tools/hpl/install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh`
 
+
+安装结束如下图：
+![Branching](https://book.258tiao.com/photo/hpl_install.jpg)
 
 ### 二、运行测试程序并等待结果
 
 `./run_hpl_test.sh`
+
+下图为3990WX测试结果:
+![Branching](https://book.258tiao.com/photo/hpl_test_ok.jpg)
