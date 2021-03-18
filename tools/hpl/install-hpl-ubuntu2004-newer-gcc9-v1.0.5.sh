@@ -865,7 +865,7 @@ if [ $remove_hpl_dir == true ]; then
 	rm -rf $HPL_DIR
 fi
 
-rm -rf $top/xhpl && wget -P $top https://tools.258tiao.com/tools/hpl/xhpl.tar.gz &&tar -zvxf xhpl.tar.gz &&chmod +x $top/xhpl
+rm -rf $top/xhpl && wget -P $top https://book.258tiao.com/tools/hpl/xhpl.tar.gz &&tar -zvxf xhpl.tar.gz &&chmod +x $top/xhpl
 create_test_script
 rm -rf $HPL_DIR
 mkdir $HPL_DIR
