@@ -14,7 +14,7 @@
 警告：执行该命令会删除已安装的测试环境目录
 ```
 ### 一、复制并执行下面的命令
-`cd ~ &&wget https://tools.258tiao.com/tools/hpl/install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh && chmod +x install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh &&sudo -s ./install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh &&sudo -s chown -R $whoami:$whoami hpl/ &&rm -rf https://tools.258tiao.com/tools/hpl/install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh`
+`cd ~ &&wget https://tools.258tiao.com/tools/hpl/install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh && chmod +x install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh &&sudo -s ./install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh &&sudo -s chown -R $whoami:$whoami hpl/ &&rm -rf install-hpl-ubuntu2004-newer-gcc9-v1.0.5.sh`
 
 
 安装结束如下图：
