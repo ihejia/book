@@ -24,5 +24,5 @@
 
 `./run_hpl_test.sh`
 
-下图为3990WX测试结果:
+下图为3990X测试结果:
 ![Branching](https://book.258tiao.com/photo/hpl_test_ok.jpg)
