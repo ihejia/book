@@ -34,7 +34,7 @@ if [ ! -e "$conda_ver" ] ; then
 		$conda_path/bin/conda create -n tf21 python=3.7 tensorflow-gpu==2.1 cudatoolkit=10.1 -y
 		rm -rf benchmarks_tf21 benchmarks_tf21.tar.gz tensorflow_benchmark.sh
 		#如果访问github困难将修改为wget下载程序包
-		#git clone -b cnn_tf_v2.1_compatible https://github.com/tensorflow/benchmarks  benchmarks_tf21
+		#git clone -b cnn_tf_v2.1_compatible git://github.com/tensorflow/benchmarks  benchmarks_tf21
 		wget https://tools.258tiao.com/tools/benchmarks_tf21.tar.gz
 		wget --no-check-certificate -P ~ https://tools.258tiao.com/script/tensorflow_benchmark.sh && chmod +x ~/tensorflow_benchmark.sh 
 		tar -zvxf benchmarks_tf21.tar.gz
