@@ -1,7 +1,6 @@
 # AMD CPU HPL一键配置程序
-## Power by AMD China FAE Team
 
-转载注明本文链接：<https://tools.258tiao.com>
+转载注明本文链接：<https://book.258tiao.com>
 
 ```note
 1、该脚本目前只在ubuntu 20.04 LTS环境进行测试通过
