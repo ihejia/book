@@ -1,8 +1,6 @@
 # Linux下查看硬盘UUID和修改硬盘UUID
 
-## Power by AMD China FAE Team
-
-转载注明本文链接：<https://blog.258tiao.com/?id=4>
+转载注明本文链接：
 
 ```note
 硬盘分区查看可以通过ls与blkid命令,具体示例如下：
