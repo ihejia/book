@@ -1,8 +1,7 @@
 # 修改ESXi root密码复杂性
 
-## Power by AMD China FAE Team
 
-转载注明本文链接：<https://blog.258tiao.com/?id=4>
+转载注明本文链接
 
 ```note
 ESXi 默认密码策略太过于严格，引起使用不便，可以通过修改密码复杂性解决
