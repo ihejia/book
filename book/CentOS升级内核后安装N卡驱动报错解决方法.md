@@ -1,8 +1,7 @@
 # CentOS7 升级内核后安装N卡驱动报错解决方法
 
-## Power by AMD China FAE Team
 
-转载注明本文链接：<https://book.258tiao.com/?id=4>
+转载注明本文链接：
 
 ```tip
 升级CentOS内核后，由于新版的kernel核心使用新版本的gcc 9.3.1编译。系统内置的gcc版本为 4.8.5，会导致N卡驱动拒绝安装。
