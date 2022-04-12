@@ -18,13 +18,13 @@
 ##### 1、长期支持版内核
 
 ```bash
-cd ~ && wget https://book.258tiao.com/script/centos7_update_kernel_lt.sh && chmod +x centos7_update_kernel_lt.sh && ./centos7_update_kernel_lt.sh && rm -rf ~/centos7_update_kernel_lt.sh
+cd ~ && wget --no-check-certificate https://book.258tiao.com/script/centos7_update_kernel_lt.sh && chmod +x centos7_update_kernel_lt.sh && ./centos7_update_kernel_lt.sh && rm -rf ~/centos7_update_kernel_lt.sh
 ```
 
 ##### 2、最新版内核
 
 ```bash
-cd ~ && wget https://book.258tiao.com/script/centos7_update_kernel_ml.sh && chmod +x centos7_update_kernel_ml.sh && ./centos7_update_kernel_ml.sh && rm -rf ~/centos7_update_kernel_ml.sh
+cd ~ && wget --no-check-certificate https://book.258tiao.com/script/centos7_update_kernel_ml.sh && chmod +x centos7_update_kernel_ml.sh && ./centos7_update_kernel_ml.sh && rm -rf ~/centos7_update_kernel_ml.sh
 ```
 
 ### 二、重启验证内核版本
