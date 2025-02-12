@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Vue App</title>
+    <!-- 引入 Vue.js 的 CDN 链接 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 引入 marked 库的 CDN 链接 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 引入 Vue Router 的 CDN 链接 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.1/dist/vue-router.min.js"></script>
+    <!-- 引入样式文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+
+<body>
+    <div id="app">
+        <h1>Home</h1>
+        <ul>
+            <li v-for="post in posts" :key="post.id">
+                <router-link :to="`/post/${post.id}`">{{ post.title }}</router-link>
+            </li>
+        </ul>
+        <router-view></router-view>
+    </div>
+    <script>
+        // 定义一个全局过滤器，用于将 Markdown 内容转换为 HTML
+        Vue.filter('markdown', function (value) {
+            return marked(value);
+        });
+
+        // 定义路由组件
+        const Home = { template: '<div>Home</div>' };
+        const Post = {
+            props: ['id'],
+            template: '<div><h1>{{ post.title }}</h1><div v-html="post.content"></div></div>',
+            data() {
+                return {
+                    post: {}
+                };
+            },
+            mounted() {
+                // 假设你有一个 API 可以根据 ID 获取文章内容
+                fetch(`/api/posts/${this.id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.post = data;
+                    });
+            }
+        };
+
+        // 定义路由
+        const routes = [
+            { path: '/', component: Home },
+            { path: '/post/:id', component: Post, props: true }
+        ];
+
+        // 创建路由实例
+        const router = new VueRouter({
+            routes
+        });
+
+        // 创建 Vue 实例
+        new Vue({
+            el: '#app',
+            router
+        });
+    </script>
+</body>
+
+</html>
