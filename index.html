@@ -1,73 +1,554 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Vue App</title>
-    <!-- 引入 Vue.js 的 CDN 链接 -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <!-- 引入 marked 库的 CDN 链接 -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <!-- 引入 Vue Router 的 CDN 链接 -->
-    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.1/dist/vue-router.min.js"></script>
-    <!-- 引入样式文件 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <meta name="color-scheme" content="light dark">
+    <meta name="forced-colors" content="none">
+    <title>我的博客</title>
+    <script src="https://lib.baomitu.com/marked/4.0.2/marked.min.js"></script>
+    <script src="https://lib.baomitu.com/vue/2.6.14/vue.min.js"></script>
+    <script src="https://lib.baomitu.com/axios/0.24.0/axios.min.js"></script>
+    <link href="https://lib.baomitu.com/bulma/0.9.3/css/bulma.min.css" rel="stylesheet">
+    <style>
+        [v-cloak] { display: none; }
+        :root {
+            --primary-color: #70a1ff;       /* 柔和的蓝色 */
+            --secondary-color: #ff7f50;     /* 珊瑚色 */
+            --accent-color: #ffa502;        /* 温暖的橙色 */
+            --background-color: #f9f7f7;    /* 淡灰白色 */
+            --card-background: #ffffff;
+            --text-primary: #2f3542;        /* 深灰色文字 */
+            --text-secondary: #747d8c;      /* 次要文字颜色 */
+            --border-color: #e3e3e3;
+            --hover-color: #ff6b81;         /* 粉红色悬停 */
+        }
+        body {
+            background-color: var(--background-color);
+            color: var(--text-primary);
+        }
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .sidebar {
+            padding: 20px;
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .archive-month {
+            margin-bottom: 20px;
+        }
+        .archive-month h3 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        .archive-list {
+            list-style: none;
+            padding-left: 10px;
+        }
+        .archive-list li {
+            margin-bottom: 8px;
+        }
+        .archive-list a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .archive-list a:hover {
+            color: var(--hover-color);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        .content-area {
+            padding: 20px;
+        }
+        .article-list {
+            margin-bottom: 30px;
+        }
+        .article-item {
+            margin-bottom: 25px;
+            padding: 25px;
+            background-color: var(--card-background);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border: none;
+        }
+        .article-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        .article-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .article-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .article-title a:hover {
+            color: var(--hover-color);
+        }
+        .article-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .article-meta span {
+            margin-right: 1rem;
+        }
+        .icon-text {
+            margin-right: 4px;
+        }
+        .article-meta i {
+            margin-right: 5px;
+            color: var(--secondary-color);
+        }
+        .article-preview {
+            color: var(--text-primary);
+            margin-top: 15px;
+            line-height: 1.8;
+        }
+        .read-more {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .read-more:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--hover-color);
+        }
+        .navbar {
+            background-color: var(--card-background) !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .navbar-brand strong {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        .markdown-content {
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            background-color: var(--hover-color);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .search-box {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(112, 161, 255, 0.2);
+        }
+        .search-results {
+            margin-top: 10px;
+        }
+        .search-result-item {
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .search-result-item:hover {
+            background-color: rgba(112, 161, 255, 0.1);
+        }
+        /* 添加加载动画 */
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--border-color);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading-container {
+            text-align: center;
+            padding: 20px;
+        }
+        /* 优化搜索结果样式 */
+        .search-box {
+            position: relative;
+        }
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 5px;
+            padding: 5px;
+        }
+        .search-result-item {
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 2px 0;
+        }
+        .no-results {
+            padding: 10px 15px;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+        /* 优化返回顶部按钮 */
+        .back-to-top {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+        /* 添加淡入淡出效果 */
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 0.3s ease;
+        }
+        .fade-enter, .fade-leave-to {
+            opacity: 0;
+        }
+    </style>
 </head>
-
 <body>
-    <div id="app">
-        <h1>Home</h1>
-        <ul>
-            <li v-for="post in posts" :key="post.id">
-                <router-link :to="`/post/${post.id}`">{{ post.title }}</router-link>
-            </li>
-        </ul>
-        <router-view></router-view>
+    <div id="app" v-cloak>
+        <nav class="navbar is-light">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <strong>水样流年</strong>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="main-container">
+            <div class="columns">
+                <div class="column is-three-quarters content-area">
+                    <div class="article-list">
+                        <div class="loading-container" v-if="loading">
+                            <div class="loading-spinner"></div>
+                            <p>加载文章中...</p>
+                        </div>
+                        <transition-group name="fade">
+                            <div v-for="(post, index) in posts" 
+                                 :key="post.path" 
+                                 class="article-item"
+                                 :id="'article-' + index">
+                                <h2 class="article-title">
+                                    <a href="#" @click.prevent="showFullArticle(post, index)">{{ post.title }}</a>
+                                </h2>
+                                <div class="article-meta">
+                                    <span><span class="icon-text">📅</span>{{ post.date }}</span>
+                                    <span><span class="icon-text">⏱️</span>{{ post.readingTime }} 分钟阅读</span>
+                                </div>
+                                <div class="article-preview" v-if="!post.showFull" v-html="post.preview"></div>
+                                <div class="markdown-content" v-if="post.showFull" v-html="post.renderedContent"></div>
+                                <a href="#" 
+                                   class="read-more" 
+                                   @click.prevent="post.showFull ? hideFullArticle(post) : showFullArticle(post, index)">
+                                    {{ post.showFull ? '收起全文' : '阅读全文' }}
+                                </a>
+                            </div>
+                        </transition-group>
+                    </div>
+                </div>
+                <div class="column is-one-quarter">
+                    <div class="sidebar">
+                        <div class="search-box">
+                            <input type="text" 
+                                   class="search-input" 
+                                   v-model="searchQuery" 
+                                   placeholder="搜索文章..."
+                                   @input="searchArticles">
+                            <transition name="fade">
+                                <div class="search-results" v-if="searchQuery.trim() && (searchResults.length > 0 || showNoResults)">
+                                    <div v-if="searchResults.length > 0">
+                                        <div v-for="(result, index) in searchResults" 
+                                             :key="result.title"
+                                             class="search-result-item"
+                                             @click="scrollToArticle(result.title, index)">
+                                            {{ result.title }}
+                                        </div>
+                                    </div>
+                                    <div v-else class="no-results">
+                                        未找到相关文章
+                                    </div>
+                                </div>
+                            </transition>
+                        </div>
+                        <h2 class="title is-4">文章归档</h2>
+                        <div v-for="(articles, month) in groupedPosts" :key="month" class="archive-month">
+                            <h3>{{ month }}</h3>
+                            <ul class="archive-list">
+                                <li v-for="(article, articleIndex) in articles" :key="article.path">
+                                    <a href="#" @click.prevent="scrollToArticle(article.title, articleIndex)">
+                                        {{ article.title }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="back-to-top" 
+             :class="{ visible: showBackToTop }"
+             @click="scrollToTop">
+            ⬆️
+        </div>
     </div>
+
     <script>
-        // 定义一个全局过滤器，用于将 Markdown 内容转换为 HTML
-        Vue.filter('markdown', function (value) {
-            return marked(value);
-        });
-
-        // 定义路由组件
-        const Home = { template: '<div>Home</div>' };
-        const Post = {
-            props: ['id'],
-            template: '<div><h1>{{ post.title }}</h1><div v-html="post.content"></div></div>',
-            data() {
-                return {
-                    post: {}
-                };
-            },
-            mounted() {
-                // 假设你有一个 API 可以根据 ID 获取文章内容
-                fetch(`/api/posts/${this.id}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        this.post = data;
-                    });
+        // 处理浏览器扩展的错误
+        window.addEventListener('error', function(event) {
+            if (event.filename && (
+                event.filename.includes('onetabpro_content.js') ||
+                event.filename.includes('content.js')
+            )) {
+                event.preventDefault();
+                return true;
             }
-        };
+        }, true);
 
-        // 定义路由
-        const routes = [
-            { path: '/', component: Home },
-            { path: '/post/:id', component: Post, props: true }
-        ];
+        // 主应用代码
+        window.addEventListener('DOMContentLoaded', function() {
+            new Vue({
+                el: '#app',
+                data: {
+                    posts: [],
+                    searchQuery: '',
+                    searchResults: [],
+                    showBackToTop: false,
+                    loading: true,
+                    showNoResults: false
+                },
+                computed: {
+                    groupedPosts() {
+                        const groups = {};
+                        this.posts.forEach(post => {
+                            const date = new Date(post.date);
+                            const month = `${date.getFullYear()}年${date.getMonth() + 1}月`;
+                            if (!groups[month]) {
+                                groups[month] = [];
+                            }
+                            groups[month].push(post);
+                        });
+                        return groups;
+                    }
+                },
+                methods: {
+                    async fetchPosts() {
+                        this.loading = true;
+                        try {
+                            // 获取 book 目录下的所有 .md 文件
+                            const response = await axios.get('/book/');
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(response.data, 'text/html');
+                            
+                            // 获取所有链接，包括子目录中的
+                            const links = Array.from(doc.querySelectorAll('a'))
+                                .filter(a => {
+                                    const href = a.getAttribute('href');
+                                    return href && href.endsWith('.md') && !href.includes('README.md');
+                                })
+                                .map(a => {
+                                    const href = a.getAttribute('href');
+                                    // 确保链接是完整的路径
+                                    return href.startsWith('/') ? href : `/book/${href}`;
+                                });
 
-        // 创建路由实例
-        const router = new VueRouter({
-            routes
-        });
+                            console.log('找到的文章链接:', links); // 调试用
 
-        // 创建 Vue 实例
-        new Vue({
-            el: '#app',
-            router
+                            const posts = await Promise.all(
+                                links.map(async link => {
+                                    try {
+                                        const resp = await axios.get(link);
+                                        const content = resp.data;
+                                        
+                                        // 提取标题
+                                        const titleMatch = content.match(/^#\s+(.+)$/m);
+                                        const title = titleMatch ? titleMatch[1] : 
+                                            decodeURIComponent(link.split('/').pop().replace('.md', ''));
+                                        
+                                        // 提取日期
+                                        const dateMatch = content.match(/日期:\s*(\d{4}-\d{2}-\d{2})/);
+                                        const date = dateMatch ? new Date(dateMatch[1]) : new Date();
+                                        
+                                        // 生成预览
+                                        const contentLines = content.split('\n');
+                                        const previewContent = contentLines
+                                            .filter(line => !line.startsWith('#') && !line.includes('日期:'))
+                                            .join('\n')
+                                            .substring(0, 200) + '...';
+                                        
+                                        return {
+                                            title,
+                                            date: date.toLocaleDateString('zh-CN'),
+                                            content,
+                                            renderedContent: marked.parse(content),
+                                            preview: marked.parse(previewContent),
+                                            readingTime: Math.ceil(content.length / 500),
+                                            showFull: false,
+                                            path: link
+                                        };
+                                    } catch (err) {
+                                        console.warn('加载文章失败:', link, err);
+                                        return null;
+                                    }
+                                })
+                            );
+                            
+                            // 过滤掉加载失败的文章并按日期排序
+                            this.posts = posts
+                                .filter(post => post !== null)
+                                .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                            console.log('加载的文章:', this.posts); // 调试用
+                            
+                        } catch (error) {
+                            console.error('加载文章列表失败:', error);
+                            const welcomeContent = '# 欢迎访问\n\n目前暂无文章。';
+                            this.posts = [{
+                                title: '欢迎来到我的博客',
+                                date: new Date().toLocaleDateString('zh-CN'),
+                                content: welcomeContent,
+                                renderedContent: marked.parse(welcomeContent),
+                                preview: '目前暂无文章。',
+                                readingTime: 1,
+                                showFull: false
+                            }];
+                        } finally {
+                            this.loading = false;
+                        }
+                    },
+                    showFullArticle(post, index) {
+                        post.showFull = true;
+                        this.$nextTick(() => {
+                            this.scrollToArticle(post.title, index);
+                        });
+                    },
+                    hideFullArticle(post) {
+                        post.showFull = false;
+                    },
+                    scrollToArticle(title, index) {
+                        const element = document.getElementById(`article-${index}`);
+                        if (element) {
+                            element.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    },
+                    searchArticles() {
+                        if (!this.searchQuery.trim()) {
+                            this.searchResults = [];
+                            this.showNoResults = false;
+                            return;
+                        }
+                        const query = this.searchQuery.toLowerCase();
+                        this.searchResults = this.posts.filter(post => 
+                            post.title.toLowerCase().includes(query) ||
+                            post.content.toLowerCase().includes(query)
+                        );
+                        this.showNoResults = this.searchResults.length === 0;
+                    },
+                    handleScroll() {
+                        this.showBackToTop = window.scrollY > 300;
+                    },
+                    scrollToTop() {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    },
+                    throttle(func, limit) {
+                        let inThrottle;
+                        return function() {
+                            const args = arguments;
+                            const context = this;
+                            if (!inThrottle) {
+                                func.apply(context, args);
+                                inThrottle = true;
+                                setTimeout(() => inThrottle = false, limit);
+                            }
+                        }
+                    }
+                },
+                mounted() {
+                    this.fetchPosts();
+                    window.addEventListener('scroll', this.throttle(this.handleScroll, 200));
+                },
+                beforeDestroy() {
+                    window.removeEventListener('scroll', this.handleScroll);
+                }
+            });
         });
     </script>
 </body>
-
 </html>
